@@ -13,18 +13,17 @@ export default class ArpeggioGenerator {
          this.stop();
       };
    }
-   addArpeggio(pattern, noteConfig) {
+   addArpeggio(pattern, noteContext) {
       let fullPattern = [];
-      for(let octave = 0; octave < noteConfig.octaves; octave++) {
+      for(let octave = 0; octave < noteContext.octaves; octave++) {
          pattern.forEach((note) => {
-            let newNote = Object.assign({}, note);
+            let newNote = (<any>Object).assign({}, note);
             newNote.octave = octave;
             if('octave' in note) newNote.octave += note.octave;
             fullPattern.push(newNote); 
          });
       }
-      console.log(fullPattern);
-      let arpeggio = new Arpeggio(this.ctx, fullPattern, noteConfig);
+      let arpeggio = new Arpeggio(this.ctx, fullPattern, noteContext);
       this.arpeggios.push(arpeggio);
       return arpeggio;
    }

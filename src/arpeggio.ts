@@ -8,9 +8,9 @@ export default class Arpeggio {
     currentNote: number;
     direction: "normal" | "reverse" | "alternate" | "random";
     currentDirection: "accending" | "decending";
-    noteConfig: Object;
+    noteContext: NoteContext;
     noteGenerator: NoteGenerator;
-   constructor(ctx: AudioContext, pattern: Array<Note>, noteConfig) {
+   constructor(ctx: AudioContext, pattern: Array<Note>, noteContext: NoteContext) {
       this.ctx = ctx;
       this.pattern = pattern;
       this.oscil = new Oscillator(ctx);
@@ -18,8 +18,8 @@ export default class Arpeggio {
       this.direction = "normal";
       this.currentDirection= "accending";
       
-      this.noteConfig = noteConfig;
-      this.noteGenerator = new NoteGenerator(this.noteConfig);
+      this.noteContext = noteContext;
+      this.noteGenerator = new NoteGenerator(this.noteContext);
       
       this.playNextNote();
    }
