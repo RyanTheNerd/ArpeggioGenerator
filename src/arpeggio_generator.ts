@@ -1,10 +1,15 @@
+import Arpeggio from './arpeggio';
 
-class ArpeggioGenerator {
+export default class ArpeggioGenerator {
+    ctx: AudioContext;
+    wholeNoteLength: number;
+    arpeggios: Array<Arpeggio>;
+
    constructor() {
       this.ctx = new AudioContext();
       this.wholeNoteLength = 1;
       this.arpeggios = [];
-      document.querySelector('#stop').onclick = () => {
+      (document.querySelector('#stop') as HTMLElement).onclick = () => {
          this.stop();
       };
    }

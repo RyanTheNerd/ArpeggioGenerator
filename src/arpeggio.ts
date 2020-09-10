@@ -1,18 +1,29 @@
-class Arpeggio {
-   constructor(ctx, pattern, noteConfig) {
+import Oscillator from './oscillator';
+import NoteGenerator from './note_generator';
+
+export default class Arpeggio {
+    ctx: AudioContext;
+    pattern: Array<Note>;
+    oscil: Oscillator;
+    currentNote: number;
+    direction: "normal" | "reverse" | "alternate" | "random";
+    currentDirection: "accending" | "decending";
+    noteConfig: Object;
+    noteGenerator: NoteGenerator;
+   constructor(ctx: AudioContext, pattern: Array<Note>, noteConfig) {
       this.ctx = ctx;
       this.pattern = pattern;
       this.oscil = new Oscillator(ctx);
       this.currentNote = 0;
       this.direction = "normal";
-      this.alternateDirection = "accending";
+      this.currentDirection= "accending";
       
       this.noteConfig = noteConfig;
       this.noteGenerator = new NoteGenerator(this.noteConfig);
       
       this.playNextNote();
    }
-   playNextNote(startTime = null) {
+   playNextNote(startTime: number = null) {
       if(startTime == null) startTime = this.ctx.currentTime;
       
       this.determineNextNote();
@@ -34,12 +45,13 @@ class Arpeggio {
       }
       else if(this.direction == "alternate") {
          if(this.currentNote > this.pattern.length) {
-            this.alternateDirection = -1;
+            this.currentDirection = "decending";
+            this.currentNote -= 1;
          }
          else if(this.currentNote < 0) {
-            this.alternateDirection = 1;
+            this.currentDirection = "accending";
+            this.currentNote += 1;
          }
-         this.currentNote += this.alternateDirection;
       }
       else if(this.direction == "random") {
          let prevNote = this.currentNote;

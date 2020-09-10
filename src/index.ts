@@ -1,5 +1,6 @@
+import ArpeggioGenerator from './arpeggio_generator';
 
-document.querySelector("#start").onclick = () => {
+(document.querySelector("#start") as HTMLElement).onclick = () => {
    let arpeggioGenerator = new ArpeggioGenerator();
    
    let arpeggio = arpeggioGenerator.addArpeggio([
