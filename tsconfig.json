@@ -3,7 +3,7 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "lib": ["ES6", "dom", "ES2017"],
-        "target": "es5",
+        "target": "ES6",
         "allowJs": true,
     }
 }
