@@ -1,5 +1,6 @@
 import {CHORDS} from './note_data';
 import Arpeggio from './arpeggio';
+import Pattern from './pattern';
 
 export default class ArpeggioGenerator {
     ctx: AudioContext;
@@ -15,7 +16,9 @@ export default class ArpeggioGenerator {
       };
    }
    addArpeggio(notes, noteContext) {
-      let arpeggio = new Arpeggio(this.ctx, notes, noteContext);
+      let pattern = new Pattern();
+      pattern.push(...notes);
+      let arpeggio = new Arpeggio(this.ctx, pattern, noteContext);
       this.arpeggios.push(arpeggio);
       return arpeggio;
    }

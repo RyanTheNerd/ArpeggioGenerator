@@ -1,16 +1,15 @@
 import ArpeggioGenerator from './arpeggio_generator';
+import Pattern from './pattern';
 
 (document.querySelector("#start") as HTMLElement).onclick = () => {
    let arpeggioGenerator = new ArpeggioGenerator();
    
    let arpeggio = arpeggioGenerator.addArpeggio(arpeggioGenerator.patternFromChord("Major 7th"), {
-      octave: -2,
-      rootFreq: 440,
+      rootFreq: 60,
       wholeNoteLength: 0.05
    });
-   arpeggio.pattern.appendOctaves(3);
-   arpeggio.pattern.appendNotes(arpeggio.pattern.swapEveryOther(arpeggio.pattern.copyNotes()));
-   console.log(arpeggio.pattern.notes);
+   let pattern = arpeggio.pattern;
+   pattern.appendOctaves(3);
    arpeggio.start();
    // let arpeggio = arpeggioGenerator.addArpeggio([
       // {note: 'C', octave: 1},

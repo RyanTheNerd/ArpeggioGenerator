@@ -12,43 +12,30 @@ const DEFAULT_NOTE_VALUES = {
     length: 1,
 }
 
-export default class Pattern {
-    notes: Array<NoteConfig>;
-    constructor(notes) {
-        this.notes = notes.map((note) => {
-            return Object.assign({}, DEFAULT_NOTE_VALUES, note);
-        });
-    }
-    appendNotes(notes) {
-        this.notes = [...this.notes, ...notes];
-    }
-    copyNotes() {
-        return [...this.notes];
-    }
+export default class Pattern extends Array {
     mirrorPattern() {
-        this.notes = [...this.copyNotes(), ...this.reverseNotes().slice(1, -1)];
+        this.push(...this.slice(1, -1).reverse());
     }
     appendOctaves(octaves) {
         for(let octave = 0; octave < octaves; octave++) {
-            this.appendNotes(this.changeOctave(this.copyNotes(), octave));
+            this.push(this.changeOctave(octave));
         }
-
     }
-    changeOctave(notes, octave) {
-        return notes.map((note) => {
+    changeOctave(octave) {
+        return this.map((note) => {
             let newNote = Object.assign({}, note);
             newNote.octave += octave;
             return newNote;
         });
     }
-    reverseNotes(notes = this.notes) {
-        return [...notes].reverse();
-    }
-    swapEveryOther(notes = this.notes) {
-        let newNotes = [...notes];
-        for(let i = 0; i < newNotes.length - 1; i++) {
-            [newNotes[i], newNotes[i+1]] = [newNotes[i+1], newNotes[i]];
+    swapEveryOther() {
+        for(let i = 0; i < this.length - 1; i++) {
+            [this[i], this[i+1]] = [this[i+1], this[i]];
         }
-        return newNotes;
     }
 }
+let pattern = new Pattern();
+pattern.push({note: 'A', length: 5}, {note: 'B', length: 2});
+console.log(pattern);
+console.log(pattern.constructor == Array);
+console.log(pattern.constructor == Pattern);
