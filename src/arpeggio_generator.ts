@@ -18,6 +18,9 @@ export default class ArpeggioGenerator {
    addArpeggio(notes, noteContext) {
       let pattern = new Pattern();
       pattern.push(...notes);
+      console.log(pattern);
+      console.log(pattern.constructor == Array);
+      console.log(pattern.constructor == Pattern);
       let arpeggio = new Arpeggio(this.ctx, pattern, noteContext);
       this.arpeggios.push(arpeggio);
       return arpeggio;
