@@ -8,14 +8,17 @@ export default class Oscillator {
       this.gain = this.ctx.createGain();
       this.oscil = this.ctx.createOscillator();
       this.oscil.connect(this.gain);
+      this.oscil.type = "square";
       this.gain.connect(this.ctx.destination);
       
-      this.setGain(10);
+      this.setGain(1);
       
-      this.oscil.start();
    }
    stop() {
       this.oscil.stop();
+   }
+   start() {
+      this.oscil.start();
    }
    setFreq(freq: number, startTime = 0) {
       this.oscil.frequency.setValueAtTime(freq, this.ctx.currentTime + startTime);

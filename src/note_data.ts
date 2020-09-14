@@ -1,4 +1,4 @@
-const CHORDS = {
+export const CHORDS = {
     "Major Triad": [1, 5, 8],
     "Minor Triad": [1, 4, 8],
     "7th": [1, 5, 8, 11],
@@ -15,9 +15,9 @@ const CHORDS = {
     "Custom": [1, 5, 8],
 };
 
-const WAVEFORMS = ["sine", "square", "triangle", "sawtooth"];
+export const WAVEFORMS = ["sine", "square", "triangle", "sawtooth"];
 
-const NOTES = [
+export const NOTES = [
    ['A'],
    ['A#', 'Bb'],
    ['B'],

@@ -4,7 +4,7 @@
   "description": "Make all sorts of arpeggios",
   "main": "src/index.ts",
   "scripts": {
-    "test": "webpack"
+    "test": "webpack --watch"
   },
   "author": "Ryan Mattox",
   "license": "ISC",

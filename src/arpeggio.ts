@@ -1,18 +1,20 @@
 import Oscillator from './oscillator';
 import NoteGenerator from './note_generator';
+import Pattern from './pattern';
 
 export default class Arpeggio {
     ctx: AudioContext;
-    pattern: Array<Note>;
+    pattern: Pattern;
     oscil: Oscillator;
     currentNote: number;
     direction: "normal" | "reverse" | "alternate" | "random";
     currentDirection: "accending" | "decending";
     noteContext: NoteContext;
     noteGenerator: NoteGenerator;
-   constructor(ctx: AudioContext, pattern: Array<Note>, noteContext: NoteContext) {
+   constructor(ctx: AudioContext, notes: Array<Note>, noteContext: NoteContext) {
       this.ctx = ctx;
-      this.pattern = pattern;
+      this.pattern = new Pattern(notes);
+      console.log(this.pattern.notes);
       this.oscil = new Oscillator(ctx);
       this.currentNote = 0;
       this.direction = "normal";
@@ -20,48 +22,20 @@ export default class Arpeggio {
       
       this.noteContext = noteContext;
       this.noteGenerator = new NoteGenerator(this.noteContext);
-      
-      this.playNextNote();
    }
-   playNextNote(startTime: number = null) {
-      if(startTime == null) startTime = this.ctx.currentTime;
-      
-      this.determineNextNote();
-      let note = this.noteGenerator.compile(this.pattern[this.currentNote]);
+   playNextNote(startTime: number = 0) {
+      let note = this.noteGenerator.compile(this.pattern.notes[this.currentNote]);
       this.oscil.setFreq(note.freq, startTime);
-      let nextTime = this.ctx.currentTime + note.length;
+      let time = this.ctx.currentTime;
       window.setTimeout(() => {
-         this.playNextNote(nextTime); 
-      }, (note.length) * 1000 - 100);
+         this.playNextNote(time + note.length); 
+      }, (note.length) * 1000);
+      this.currentNote++;
+      this.currentNote %= this.pattern.notes.length;
    }
-   determineNextNote() {
-      if(this.direction == "normal") {
-         this.currentNote += 1;
-         this.currentNote %= this.pattern.length;
-      }
-      else if(this.direction == "reverse") {
-         this.currentNote -= 1;
-         if(this.currentNote < 0) this.currentNote = this.pattern.length - 1;
-      }
-      else if(this.direction == "alternate") {
-         if(this.currentNote > this.pattern.length) {
-            this.currentDirection = "decending";
-            this.currentNote -= 1;
-         }
-         else if(this.currentNote < 0) {
-            this.currentDirection = "accending";
-            this.currentNote += 1;
-         }
-      }
-      else if(this.direction == "random") {
-         let prevNote = this.currentNote;
-         while(this.currentNote == prevNote && this.pattern.length > 1) {
-            this.currentNote = Math.floor(Math.random() * this.pattern.length);
-         }
-      }
-      else {
-         console.error("Invalid direction");
-      }
+   start() {
+      this.oscil.start();
+      this.playNextNote();
    }
    stop() {
       this.oscil.stop();

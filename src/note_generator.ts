@@ -1,3 +1,4 @@
+import {NOTES} from './note_data';
 export default class NoteGenerator {
      noteContext: NoteContext;
     constructor(noteContext) {
@@ -14,7 +15,7 @@ export default class NoteGenerator {
         }
         else {
             let octave = 'octave' in note ? note.octave : 0;
-            octave += this.noteContext.octave;
+            octave += 'octave' in this.noteContext ? this.noteContext.octave : 0;
             let halfSteps: number;
             if('note' in note) {
                 halfSteps = this.noteToHalfSteps(note.note);
@@ -30,13 +31,13 @@ export default class NoteGenerator {
             length: length,
         }
     }
-    noteToHalfSteps(noteName) {
+    noteToHalfSteps(noteName: string) {
         for(let i = 0; i < NOTES.length; i++) {
-            if(noteName in NOTES[i]) return i;
+            if(NOTES[i].includes(noteName)) return i;
         }
-        console.error("noteToHalfSteps failed: Invalid note name");
+        console.error(`noteToHalfSteps failed: Invalid note name: ${noteName}`);
     }
-    halfStepsToFreq(halfSteps, octave) {
+    halfStepsToFreq(halfSteps: number, octave: number = 0) {
         return Math.pow(2, (halfSteps + (octave * 12))/12) * this.noteContext.rootFreq;
     }
 }

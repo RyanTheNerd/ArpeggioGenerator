@@ -3,9 +3,15 @@ interface Note {
     length: number
 }
 
+interface NoteConfig {
+    note?: number,
+    halfSteps?: number,
+    octave: number,
+    length: number
+}
+
 interface NoteContext {
     octave?: number,
-    length?: number,
     rootFreq?: number,
     wholeNoteLength: number,
 }

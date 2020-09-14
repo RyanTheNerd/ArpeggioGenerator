@@ -1,3 +1,4 @@
+import {CHORDS} from './note_data';
 import Arpeggio from './arpeggio';
 
 export default class ArpeggioGenerator {
@@ -13,29 +14,16 @@ export default class ArpeggioGenerator {
          this.stop();
       };
    }
-   addArpeggio(pattern, noteContext) {
-      let fullPattern = [];
-      for(let octave = 0; octave < noteContext.octaves; octave++) {
-         pattern.forEach((note) => {
-            let newNote = (<any>Object).assign({}, note);
-            newNote.octave = octave;
-            if('octave' in note) newNote.octave += note.octave;
-            fullPattern.push(newNote); 
-         });
-      }
-      let arpeggio = new Arpeggio(this.ctx, fullPattern, noteContext);
+   addArpeggio(notes, noteContext) {
+      let arpeggio = new Arpeggio(this.ctx, notes, noteContext);
       this.arpeggios.push(arpeggio);
       return arpeggio;
    }
-   arpeggioFromChord(chordName, config) {
+   patternFromChord(chordName) {
       let chord = CHORDS[chordName];
-      let order = config.noteOrder || null;
-      let pattern = chord.map((note, index) => {
-         if(order) return {halfSteps: chord[order[index] - 1]};
-         else return {halfSteps: note};
+      return chord.map((halfSteps) => {
+         return {halfSteps: halfSteps}
       });
-      let fullPattern = [];
-      return this.addArpeggio(fullPattern, config);
    }
    stop() {
       this.arpeggios.forEach((a) => a.stop());
