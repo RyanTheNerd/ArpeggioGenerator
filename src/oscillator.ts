@@ -11,7 +11,7 @@ export default class Oscillator {
       this.oscil.type = "square";
       this.gain.connect(this.ctx.destination);
       
-      this.setGain(1);
+      this.setGain(20);
       
    }
    stop() {

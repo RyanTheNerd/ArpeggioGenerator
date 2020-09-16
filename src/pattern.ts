@@ -1,4 +1,4 @@
-import {CHORDS} from './note_data';
+import {CHORDS, NOTES} from './note_data';
 
 
 function fromChord(chordName) {
@@ -7,18 +7,13 @@ function fromChord(chordName) {
     });
 }
 
-const DEFAULT_NOTE_VALUES = {
-    octave: 0, 
-    length: 1,
-}
-
 export default class Pattern extends Array {
     mirrorPattern() {
         this.push(...this.slice(1, -1).reverse());
     }
     appendOctaves(octaves) {
-        for(let octave = 0; octave < octaves; octave++) {
-            this.push(this.changeOctave(octave));
+        for(let octave = 1; octave < octaves; octave++) {
+            this.push(...this.changeOctave(octave));
         }
     }
     changeOctave(octave) {
@@ -33,9 +28,17 @@ export default class Pattern extends Array {
             [this[i], this[i+1]] = [this[i+1], this[i]];
         }
     }
+    invertNotes() {
+        for(let note of this) {
+            if("halfSteps" in note) note.halfSteps = 12 - note.halfSteps;
+            else if("note" in note) note.note = 12 - NOTES.indexOf(note.note);
+            else console.error("No note or halfstep specified!");
+        }
+        return this;
+    }
+    copy() {
+        let newPattern = new Pattern();
+        newPattern.push(...this.map((note) => Object.assign({}, note)));
+        return newPattern;
+    }
 }
-let pattern = new Pattern();
-pattern.push({note: 'A', length: 5}, {note: 'B', length: 2});
-console.log(pattern);
-console.log(pattern.constructor == Array);
-console.log(pattern.constructor == Pattern);

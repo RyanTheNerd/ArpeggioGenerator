@@ -8,7 +8,9 @@ import Pattern from './pattern';
       rootFreq: 60,
       wholeNoteLength: 0.05
    });
-   let pattern = arpeggio.pattern;
+   let pattern: Pattern = arpeggio.pattern;
+   pattern.mirrorPattern();
+   pattern.push(...pattern.copy().invertNotes());
    pattern.appendOctaves(3);
    arpeggio.start();
    // let arpeggio = arpeggioGenerator.addArpeggio([
