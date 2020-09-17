@@ -1,6 +1,6 @@
 import {CHORDS} from './note_data';
 import Arpeggio from './arpeggio';
-import Pattern from './pattern';
+import {fromChord} from './pattern';
 
 export default class ArpeggioGenerator {
     ctx: AudioContext;
@@ -16,7 +16,7 @@ export default class ArpeggioGenerator {
       };
    }
    addArpeggio(notes, noteContext) {
-      let pattern = new Pattern();
+      let pattern = [];
       pattern.push(...notes);
       for(let note of pattern) {
          if(!("octave" in note)) {

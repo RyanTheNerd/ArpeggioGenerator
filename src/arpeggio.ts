@@ -1,17 +1,16 @@
 import Oscillator from './oscillator';
 import NoteGenerator from './note_generator';
-import Pattern from './pattern';
 
 export default class Arpeggio {
     ctx: AudioContext;
-    pattern: Pattern;
+    pattern: Array<NoteConfig>;
     oscil: Oscillator;
     currentNote: number;
     direction: "normal" | "reverse" | "alternate" | "random";
     currentDirection: "accending" | "decending";
     noteContext: NoteContext;
     noteGenerator: NoteGenerator;
-   constructor(ctx: AudioContext, pattern: Pattern, noteContext: NoteContext) {
+   constructor(ctx: AudioContext, pattern: Array<NoteConfig>, noteContext: NoteContext) {
       this.ctx = ctx;
       this.pattern = pattern;
       this.oscil = new Oscillator(ctx);

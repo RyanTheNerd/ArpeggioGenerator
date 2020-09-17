@@ -1,5 +1,5 @@
 import ArpeggioGenerator from './arpeggio_generator';
-import Pattern from './pattern';
+import * as mod from './pattern';
 
 (document.querySelector("#start") as HTMLElement).onclick = () => {
    let arpeggioGenerator = new ArpeggioGenerator();
@@ -8,10 +8,8 @@ import Pattern from './pattern';
       rootFreq: 60,
       wholeNoteLength: 0.05
    });
-   let pattern: Pattern = arpeggio.pattern;
-   pattern.mirrorPattern();
-   pattern.push(...pattern.copy().invertNotes());
-   pattern.appendOctaves(3);
+   let pattern = arpeggio.pattern;
+   mod.swapEveryOther(mod.everyNthNote(mod.appendOctaves(pattern, 3), mod.changeOctave, 2, [-1]));
    arpeggio.start();
    // let arpeggio = arpeggioGenerator.addArpeggio([
       // {note: 'C', octave: 1},
