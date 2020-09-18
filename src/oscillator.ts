@@ -20,8 +20,8 @@ export default class Oscillator {
    start() {
       this.oscil.start();
    }
-   setFreq(freq: number, startTime = 0) {
-      this.oscil.frequency.setValueAtTime(freq, this.ctx.currentTime + startTime);
+   setFreq(freq: number, startTime) {
+      this.oscil.frequency.setValueAtTime(freq, startTime);
    }
    setGain(percent: number) {
       this.gain.gain.setValueAtTime(percent/100, this.ctx.currentTime);

@@ -10,6 +10,7 @@ export default class Arpeggio {
     currentDirection: "accending" | "decending";
     noteContext: NoteContext;
     noteGenerator: NoteGenerator;
+    startOffset: number;
    constructor(ctx: AudioContext, pattern: Array<NoteConfig>, noteContext: NoteContext) {
       this.ctx = ctx;
       this.pattern = pattern;
@@ -19,22 +20,27 @@ export default class Arpeggio {
       this.currentDirection= "accending";
       this.noteContext = noteContext;
       this.noteGenerator = new NoteGenerator(this.noteContext);
+      this.startOffset = 0;
    }
-   playNextNote(startTime: number = 0) {
+   playNextNote(startTime: number = null) {
+      if(startTime === null) startTime = this.ctx.currentTime;
       let note = this.noteGenerator.compile(this.pattern[this.currentNote]);
       this.oscil.setFreq(note.freq, startTime);
-      let time = this.ctx.currentTime;
-      window.setTimeout(() => {
-         this.playNextNote(time + note.length); 
-      }, (note.length) * 1000);
       this.currentNote++;
       this.currentNote %= this.pattern.length;
+      let nextTime = startTime + note.length;
+      window.setTimeout((nt) => {
+         this.playNextNote(nt); 
+      }, (note.length * 1000) - 100, nextTime); //((note.length) * 1000));
    }
    start() {
       this.oscil.start();
-      this.playNextNote();
+      this.playNextNote(this.ctx.currentTime + this.startOffset);
    }
    stop() {
       this.oscil.stop();
+   }
+   clone() {
+      return new Arpeggio(this.ctx, this.pattern.slice(), Object.assign({}, this.noteContext));
    }
 }

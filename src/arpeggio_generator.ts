@@ -30,11 +30,19 @@ export default class ArpeggioGenerator {
       this.arpeggios.push(arpeggio);
       return arpeggio;
    }
+   copyArpeggio(arpeggio) {
+      let newArpeggio = arpeggio.clone();
+      this.arpeggios.push(newArpeggio);
+      return newArpeggio;
+   }
    patternFromChord(chordName) {
       let chord = CHORDS[chordName];
       return chord.map((halfSteps) => {
          return {halfSteps: halfSteps}
       });
+   }
+   start() {
+      this.arpeggios.forEach((a) => a.start());
    }
    stop() {
       this.arpeggios.forEach((a) => a.stop());
