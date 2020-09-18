@@ -6,16 +6,18 @@ import * as mod from './pattern';
    
    let arpeggio = arpeggioGenerator.addArpeggio(arpeggioGenerator.patternFromChord("Major 7th"), {
       rootFreq: 60,
-      wholeNoteLength: 0.25
+      wholeNoteLength: 0.25,
+      octave: 1
    });
    let pattern = arpeggio.pattern;
    pattern = mod.appendOctaves(pattern, 3);
    pattern = mod.everyNthNote(pattern, mod.changeOctave, 2, [-1]);
    pattern = mod.swapEveryOther(pattern);
-   pattern = mod.mirrorPattern(pattern);
 
    let arpeggio2 = arpeggioGenerator.copyArpeggio(arpeggio);
-   arpeggio2.startOffset = 0.001;
+   let pattern2 = arpeggio2.pattern;
+   pattern2.reverse();
+   pattern2 = mod.invertNotes(pattern2);
 
    arpeggioGenerator.start();
 }

@@ -32,9 +32,24 @@ export function swapEveryOther(pattern) {
 }
 export function invertNotes(pattern) {
     for(let note of pattern) {
-        if("halfSteps" in note) note.halfSteps = 12 - note.halfSteps;
-        else if("note" in note) note.note = 12 - NOTES.indexOf(note.note);
+        let halfSteps;
+        let noteType = "halfSteps" in note ? "halfSteps" : ("note" in note ? "note" : null);
+        if(noteType == "halfSteps") {
+            halfSteps = note.halfSteps;
+        }
+        else if(noteType == "note") {
+            halfSteps = NOTES.indexOf(note.note);
+        }
         else console.error("No note or halfstep specified!");
+
+        if(halfSteps == 5 || halfSteps == 6) continue;
+
+        else {
+            halfSteps = 11 - halfSteps;
+        }
+        if(noteType == "note") note.note = NOTES[halfSteps];
+        else note.halfSteps = halfSteps;
+
     }
     return pattern;
 }
